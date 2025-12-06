@@ -1,0 +1,32 @@
+# Source files
+src/
+scripts/
+tsconfig.json
+vitest.config.ts
+
+# Development
+*.test.ts
+*.test.js
+.git/
+.github/
+.vscode/
+
+# Build artifacts
+*.log
+coverage/
+
+# Data (keep only built index)
+data/gitlab-docs-repo/
+
+# Go files (legacy)
+*.go
+go.mod
+go.sum
+Makefile
+cmd/
+internal/
+pkg/
+bin/
+
+# Specs
+*SPEC.md

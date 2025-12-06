@@ -1,0 +1,75 @@
+{
+  "name": "gitlab-docs-mcp",
+  "version": "1.0.0",
+  "author": "Ozan Mutlu",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ozanmutlu/Gitlab-Docs-MCP.git"
+  },
+  "description": "GitLab documentation search for AI assistants via Model Context Protocol (MCP)",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "gitlab-docs-mcp": "./dist/bin.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "dev": "tsx src/index.ts",
+    "build-index": "tsx scripts/build-index.ts",
+    "prepare": "npm run build",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "test:watch": "vitest --watch",
+    "lint": "eslint src --max-warnings 0",
+    "lint:fix": "eslint src --fix",
+    "format": "prettier --write \"src/**/*.ts\" \"scripts/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\" \"scripts/**/*.ts\"",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist coverage",
+    "validate": "npm run typecheck && npm run lint && npm run test"
+  },
+  "keywords": [
+    "gitlab",
+    "mcp",
+    "model-context-protocol",
+    "ai-assistant",
+    "documentation",
+    "search",
+    "claude",
+    "copilot"
+  ],
+  "files": [
+    "dist/",
+    "data/gitlab-docs/",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.24.3",
+    "dotenv": "^17.2.3",
+    "flexsearch": "^0.8.212",
+    "lru-cache": "^11.2.4",
+    "remark": "^15.0.1",
+    "remark-gfm": "^4.0.1",
+    "remark-stringify": "^11.0.0",
+    "unified": "^11.0.5",
+    "zod": "^4.1.13"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/node": "^24.10.1",
+    "@vitest/coverage-v8": "^4.0.15",
+    "eslint": "^9.39.1",
+    "globals": "^16.5.0",
+    "prettier": "^3.7.4",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.48.1",
+    "vitest": "^4.0.15"
+  }
+}
