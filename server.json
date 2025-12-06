@@ -1,0 +1,20 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
+  "name": "io.github.ozanmutlu/gitlab-docs",
+  "description": "GitLab documentation search for AI assistants via Model Context Protocol (MCP)",
+  "repository": {
+    "url": "https://github.com/ozanmutlu/Gitlab-Docs-MCP",
+    "source": "github"
+  },
+  "version": "1.0.1",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "gitlab-docs-mcp",
+      "version": "1.0.1",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}
