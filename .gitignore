@@ -1,5 +1,5 @@
-# Data directory
-/data/
+# Data directory - exclude the large repo but keep the built index
+/data/gitlab-docs-repo/
 
 # Node.js
 node_modules/

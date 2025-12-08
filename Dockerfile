@@ -5,7 +5,7 @@ WORKDIR /app
 COPY package*.json tsconfig.json ./
 COPY src/ ./src/
 COPY scripts/ ./scripts/
-COPY data/ ./data/
+COPY data/gitlab-docs/ ./data/gitlab-docs/
 
 RUN npm ci && npm run build
 
@@ -26,7 +26,7 @@ COPY package*.json ./
 RUN npm ci --omit=dev --ignore-scripts && npm cache clean --force
 
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/data ./data
+COPY --from=builder /app/data/gitlab-docs ./data/gitlab-docs
 
 RUN chown -R mcp:nodejs /app
 
