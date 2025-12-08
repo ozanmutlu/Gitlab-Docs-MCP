@@ -1,20 +1,33 @@
 # GitLab Docs MCP Server
 
-A Model Context Protocol server that provides AI assistants instant access to GitLab's official documentation.
+[![npm version](https://badge.fury.io/js/gitlab-docs-mcp.svg)](https://www.npmjs.com/package/gitlab-docs-mcp)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+A [Model Context Protocol](https://modelcontextprotocol.io) server that provides AI assistants instant access to GitLab's official documentation.
+
+## Features
+
+- **Intelligent Search** - Fast, relevance-ranked search across all docs
+- **Section Filtering** - Target specific areas (CI/CD, API, Admin, etc.)
+- **Full Content Access** - Retrieve complete documentation pages
+- **Always Up-to-Date** - Automatically synced with latest GitLab docs
+- **Universal Compatibility** - Works with any MCP-compatible AI assistant
 
 ## Installation
 
-This server works with any MCP-compatible AI assistant including GitHub Copilot, Claude Desktop, Docker Desktop, and other MCP clients.
+This server works with any MCP-compatible AI assistant. The [Model Context Protocol](https://modelcontextprotocol.io) allows AI assistants to connect to external tools and data sources through a standardized interface.
 
 ### GitHub Copilot (VS Code)
 
-**1. Open VS Code Settings** (<kbd>⌘</kbd>+<kbd>,</kbd> or <kbd>Ctrl</kbd>+<kbd>,</kbd>)
+**1. Open MCP Configuration**
 
-**2. Add to `settings.json`:**
+Press <kbd>⌘</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> (or <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> on Windows/Linux), type `MCP: Open User Configuration`, and press Enter.
+
+**2. Add to `mcp.json`:**
 
 ```json
 {
-  "github.copilot.chat.mcp.servers": {
+  "servers": {
     "gitlab-docs": {
       "command": "npx",
       "args": ["-y", "gitlab-docs-mcp"]
@@ -23,9 +36,18 @@ This server works with any MCP-compatible AI assistant including GitHub Copilot,
 }
 ```
 
-**3. Restart VS Code**
+**3. Reload VS Code**
+
+Press <kbd>⌘</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> (or <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>), type `Developer: Reload Window`, and press Enter.
+
+**Alternative:** You can also manually create/edit the file at:
+- **macOS:** `~/Library/Application Support/Code/User/mcp.json`
+- **Windows:** `%APPDATA%\Code\User\mcp.json`
+- **Linux:** `~/.config/Code/User/mcp.json`
 
 ### Claude Desktop
+
+Claude Desktop is a standalone desktop application by Anthropic that supports MCP servers.
 
 Add to your Claude Desktop configuration file:
 
@@ -45,25 +67,60 @@ Add to your Claude Desktop configuration file:
 
 Restart Claude Desktop.
 
+### Cursor IDE
+
+Cursor has built-in MCP support. Create or edit the MCP configuration file:
+
+**1. Create/Edit Configuration File**
+
+- **Project-specific:** `.cursor/mcp.json` in your project root
+- **Global:** `~/.cursor/mcp.json` in your home directory
+
+**2. Add Server Configuration:**
+
+```json
+{
+  "servers": {
+    "gitlab-docs": {
+      "command": "npx",
+      "args": ["-y", "gitlab-docs-mcp"]
+    }
+  }
+}
+```
+
+**3. Restart Cursor**
+
 ### Other MCP Clients
 
-For other MCP-compatible clients, use:
+For other MCP-compatible clients (Zed, Windsurf, etc.), configure them to run:
 ```bash
 npx -y gitlab-docs-mcp
 ```
 
+Refer to your client's MCP configuration documentation for the specific format required.
+
 ## Usage
 
-Ask your AI assistant about GitLab documentation:
+Once configured, simply ask your AI assistant about GitLab:
+
+**Example Conversations:**
 
 ```
-Search GitLab docs for CI/CD pipeline configuration
-Show me GitLab Runner installation steps
-How do I configure GitLab authentication?
-Explain GitLab API rate limits
-Search GitLab docs for GraphQL mutations to update issues
-Find GitLab GraphQL query examples for project data
+You: "How do I set up a CI/CD pipeline in GitLab?"
+Assistant: [Searches GitLab docs and provides detailed pipeline configuration guide]
+
+You: "Show me how to configure GitLab Runner on Ubuntu"
+Assistant: [Retrieves GitLab Runner installation documentation]
+
+You: "What are the GraphQL mutations for updating issues?"
+Assistant: [Searches API docs and shows GraphQL mutation examples]
+
+You: "Explain GitLab's authentication options"
+Assistant: [Provides overview from authentication documentation]
 ```
+
+The AI assistant will automatically use the GitLab Docs MCP server to search documentation and provide accurate, up-to-date answers.
 
 ## Available Tools
 
@@ -87,46 +144,17 @@ Browse available documentation sections and their structure.
 ## Troubleshooting
 
 **Server not responding?**
-- Ensure Node.js 18+ is installed: `node --version`
+- Ensure Node.js 22+ is installed: `node --version`
 - Restart your AI assistant/client completely
 - Check application logs for MCP connection errors
 
-**Need to update documentation?**
-The server uses a pre-built index. For the latest GitLab docs, rebuild from source:
-```bash
-git clone <repository-url>
-cd gitlab-docs-mcp
-npm install
-npm run build-index
-npm run build
-```
+**Documentation out of date?**
+The server automatically uses the latest published version from npm. Simply restart your MCP client to get updates.
 
-Then update your MCP client configuration to use the local build:
+## Contributing
 
-**GitHub Copilot:**
-```json
-{
-  "github.copilot.chat.mcp.servers": {
-    "gitlab-docs": {
-      "command": "node",
-      "args": ["/absolute/path/to/gitlab-docs-mcp/dist/index.js"]
-    }
-  }
-}
-```
-
-**Claude Desktop:**
-```json
-{
-  "mcpServers": {
-    "gitlab-docs": {
-      "command": "node",
-      "args": ["/absolute/path/to/gitlab-docs-mcp/dist/index.js"]
-    }
-  }
-}
-```
+Found a bug or have a feature request? Please visit the [GitHub repository](https://github.com/ozanmutlu/Gitlab-Docs-MCP).
 
 ## License
 
-MIT
+MIT - see [LICENSE](LICENSE) file for details.
