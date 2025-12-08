@@ -1,0 +1,79 @@
+name: Update GitLab Docs Index
+
+on:
+  schedule:
+    # Run every Monday at 2 AM UTC
+    - cron: '0 2 * * 1'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  update-index:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build project
+        run: npm run build
+      
+      - name: Cache GitLab docs repository
+        id: cache-gitlab-docs
+        uses: actions/cache@v4
+        with:
+          path: data/gitlab-docs-repo
+          key: gitlab-docs-${{ github.run_id }}
+          restore-keys: |
+            gitlab-docs-
+      
+      - name: Clone GitLab docs repository
+        run: |
+          rm -rf data/gitlab-docs-repo
+          git clone --depth 1 https://gitlab.com/gitlab-org/gitlab.git data/gitlab-docs-repo
+      
+      - name: Build search index
+        run: npm run build-index
+      
+      - name: Check for changes
+        id: git-check
+        run: |
+          if git diff --exit-code data/gitlab-docs/; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "## 📊 Index Update Summary" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "✅ GitLab documentation index has been updated" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            git diff --stat data/gitlab-docs/ >> $GITHUB_STEP_SUMMARY
+          fi
+      
+      - name: Commit and push changes
+        if: steps.git-check.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/gitlab-docs/
+          git commit -m "chore: update GitLab docs index [automated]"
+          git push
+      
+      - name: No changes detected
+        if: steps.git-check.outputs.changed != 'true'
+        run: |
+          echo "No changes in the index, skipping commit"
+          echo "## 📊 Index Update Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "ℹ️ No changes detected in GitLab documentation" >> $GITHUB_STEP_SUMMARY
