@@ -1,18 +1,18 @@
 {
   "name": "gitlab-docs-mcp",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "mcpName": "io.github.ozanmutlu/gitlab-docs",
   "author": "Ozan Mutlu",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ozanmutlu/Gitlab-Docs-MCP.git"
+    "url": "git+https://github.com/ozanmutlu/Gitlab-Docs-MCP.git"
   },
   "description": "GitLab documentation search for AI assistants via Model Context Protocol (MCP)",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "gitlab-docs-mcp": "./dist/bin.js"
+    "gitlab-docs-mcp": "dist/bin.js"
   },
   "engines": {
     "node": ">=22.0.0"

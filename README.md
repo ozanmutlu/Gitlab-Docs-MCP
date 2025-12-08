@@ -61,6 +61,8 @@ Search GitLab docs for CI/CD pipeline configuration
 Show me GitLab Runner installation steps
 How do I configure GitLab authentication?
 Explain GitLab API rate limits
+Search GitLab docs for GraphQL mutations to update issues
+Find GitLab GraphQL query examples for project data
 ```
 
 ## Available Tools

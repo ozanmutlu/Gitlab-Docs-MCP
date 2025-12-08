@@ -3,6 +3,7 @@
 import { readFileSync, writeFileSync, readdirSync, statSync, mkdirSync, existsSync } from 'fs';
 import { join, relative } from 'path';
 import { MarkdownParser } from '../src/content/parser.js';
+import { shouldChunkDocument, chunkDocument, createSummaryChunk } from '../src/content/chunker.js';
 import type { Document } from '../src/types/models.js';
 import {
   DOCS_REPO_PATH,
@@ -61,6 +62,9 @@ function buildIndex() {
   const mdFiles = walkDir(REPO_PATH);
   console.log(`📄 Found ${mdFiles.length} markdown files`);
 
+  let chunkedDocCount = 0;
+  let totalChunksCreated = 0;
+
   // Process each file
   for (const filePath of mdFiles) {
     try {
@@ -69,17 +73,68 @@ function buildIndex() {
 
       const relativePath = relative(REPO_PATH, filePath);
       const section = relativePath.split('/')[0];
+      const docTitle = (frontmatter.title as string) || extractTitle(markdown) || relativePath;
+      const strippedContent = parser.stripMarkdown(markdown);
 
-      documents.push({
-        id: relativePath,
-        path: relativePath,
-        title: (frontmatter.title as string) || extractTitle(markdown) || relativePath,
-        section,
-        content: parser.stripMarkdown(markdown),
-        version: (frontmatter.version as string) || 'latest',
-        lastUpdated: new Date(),
-        metadata: frontmatter,
-      });
+      // Check if document should be chunked
+      if (shouldChunkDocument(relativePath, strippedContent)) {
+        console.log(`  📊 Chunking large document: ${relativePath} (${strippedContent.length.toLocaleString()} chars)`);
+        
+        const chunks = chunkDocument(relativePath, docTitle, strippedContent);
+        
+        // Create a summary document pointing to all chunks
+        const summaryContent = createSummaryChunk(relativePath, docTitle, chunks);
+        documents.push({
+          id: relativePath,
+          path: relativePath,
+          title: docTitle,
+          section,
+          content: summaryContent,
+          version: (frontmatter.version as string) || 'latest',
+          lastUpdated: new Date(),
+          metadata: {
+            ...frontmatter,
+            chunked: true,
+            totalChunks: chunks.length,
+          },
+        });
+
+        // Add each chunk as a separate document
+        for (const chunk of chunks) {
+          documents.push({
+            id: chunk.path,
+            path: chunk.path,
+            title: chunk.title,
+            section,
+            content: chunk.content,
+            version: (frontmatter.version as string) || 'latest',
+            lastUpdated: new Date(),
+            metadata: {
+              ...frontmatter,
+              isChunk: true,
+              chunkIndex: chunk.chunkIndex,
+              totalChunks: chunk.totalChunks,
+              originalPath: relativePath,
+            },
+          });
+        }
+        
+        chunkedDocCount++;
+        totalChunksCreated += chunks.length;
+        console.log(`    ✂️  Created ${chunks.length} chunks`);
+      } else {
+        // Normal document processing
+        documents.push({
+          id: relativePath,
+          path: relativePath,
+          title: docTitle,
+          section,
+          content: strippedContent,
+          version: (frontmatter.version as string) || 'latest',
+          lastUpdated: new Date(),
+          metadata: frontmatter,
+        });
+      }
 
       if (documents.length % 100 === 0) {
         console.log(`  Processed ${documents.length} documents...`);
@@ -109,6 +164,8 @@ function buildIndex() {
   console.log('🎉 Index build complete!');
   console.log(`📊 Total documents: ${documents.length}`);
   console.log(`📊 Total sections: ${new Set(documents.map((d) => d.section)).size}`);
+  console.log(`📊 Chunked documents: ${chunkedDocCount}`);
+  console.log(`📊 Total chunks created: ${totalChunksCreated}`);
 }
 
 function extractTitle(markdown: string): string | null {
