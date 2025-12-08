@@ -4,7 +4,18 @@ A Model Context Protocol server that provides AI assistants instant access to Gi
 
 ## Installation
 
-This server works with any MCP-compatible AI assistant including GitHub Copilot, Claude Desktop, and other MCP clients.
+This server works with any MCP-compatible AI assistant including GitHub Copilot, Claude Desktop, Docker Desktop, and other MCP clients.
+
+### Docker Desktop (Recommended)
+
+The easiest way to use this MCP server is through Docker Desktop's MCP Toolkit:
+
+1. **Install Docker Desktop** (with MCP support)
+2. **Open MCP Toolkit** in Docker Desktop
+3. **Search for "gitlab-docs"** in the catalog
+4. **Enable the server** - that's it!
+
+No configuration needed - Docker handles everything automatically.
 
 ### GitHub Copilot (VS Code)
 
