@@ -144,9 +144,9 @@ function buildIndex() {
     }
   }
 
-  // Write documents
+  // Write documents (compact JSON to minimize git storage)
   const docsPath = join(OUTPUT_PATH, INDEX_DOCS_FILE);
-  writeFileSync(docsPath, JSON.stringify(documents, null, 2));
+  writeFileSync(docsPath, JSON.stringify(documents));
   console.log(`✅ Wrote ${documents.length} documents to ${docsPath}`);
 
   // Write metadata

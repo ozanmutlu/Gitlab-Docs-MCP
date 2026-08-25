@@ -24,8 +24,8 @@ export async function getDocPageTool(args: unknown, context: ToolContext) {
     };
   }
 
-  // Find document
-  const doc = context.searchEngine.getAllDocuments().find((d) => d.path === path);
+  // Find document via direct map lookup (O(1) — document id equals path)
+  const doc = context.searchEngine.getDocument(path);
 
   if (!doc) {
     throw new DocumentNotFoundError(path);

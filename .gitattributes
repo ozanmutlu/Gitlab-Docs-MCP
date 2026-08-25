@@ -1,0 +1,2 @@
+# Treat the large generated index as binary to prevent massive diffs
+data/gitlab-docs/documents.json binary

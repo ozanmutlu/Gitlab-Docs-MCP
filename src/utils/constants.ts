@@ -1,9 +1,14 @@
+import { createRequire } from 'module';
+
 /**
  * Application constants
  */
 
+const require = createRequire(import.meta.url);
+const pkg = require('../../package.json') as { version: string };
+
 // Server configuration
-export const SERVER_VERSION = '1.0.0';
+export const SERVER_VERSION = pkg.version;
 export const SERVER_NAME = 'gitlab-docs-mcp';
 
 // Search configuration
