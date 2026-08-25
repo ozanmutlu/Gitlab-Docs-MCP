@@ -68,6 +68,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
+          git pull --rebase origin master
           git add package.json package-lock.json server.json
           git commit -m "release: ${{ steps.bump.outputs.version }} [automated]"
           git tag ${{ steps.bump.outputs.version }}
