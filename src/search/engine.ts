@@ -72,7 +72,7 @@ export class SearchEngine {
           if (typeof typedDoc.lastUpdated === 'string') {
             typedDoc.lastUpdated = new Date(typedDoc.lastUpdated);
           }
-          this.documents.set(typedDoc.id, typedDoc as DocType);
+          this.documents.set(typedDoc.id, typedDoc);
           this.index.add({
             id: typedDoc.id,
             title: typedDoc.title,
