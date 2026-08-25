@@ -80,6 +80,19 @@ jobs:
       - name: Publish to npm
         run: npm publish --access public
 
+      - name: Wait for npm propagation
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "Waiting for gitlab-docs-mcp@$VERSION to appear on npm..."
+          for i in $(seq 1 10); do
+            if npm view "gitlab-docs-mcp@$VERSION" version 2>/dev/null; then
+              echo "Available on npm"
+              break
+            fi
+            echo "Attempt $i/10 - not yet available, waiting 30s..."
+            sleep 30
+          done
+
       - name: Publish to MCP Registry
         run: |
           curl -sL "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_linux_amd64.tar.gz" | tar xz mcp-publisher
