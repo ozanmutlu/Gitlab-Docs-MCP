@@ -20,6 +20,7 @@ import {
   EXCERPT_CONTEXT_AFTER,
   INDEX_META_FILE,
   INDEX_DOCS_FILE,
+  pathToUrl,
 } from '../utils/constants.js';
 
 /**
@@ -144,7 +145,7 @@ export class SearchEngine {
         results.push({
           title: doc.title,
           path: doc.path,
-          url: `https://docs.gitlab.com/${doc.path}`,
+          url: pathToUrl(doc.path),
           excerpt: this.generateExcerpt(query, doc.content),
         score,
       });

@@ -32,7 +32,7 @@ export function registerResources(server: McpServer, ctx: ResourceContext): void
 
   server.registerResource(
     'doc-page',
-    new ResourceTemplate('gitlab-docs://pages/{path}', {
+    new ResourceTemplate('gitlab-docs://pages/{+path}', {
       list: () => ({
         resources: ctx.searchEngine.getAllDocuments().slice(0, 100).map((doc) => ({
           uri: `gitlab-docs://pages/${doc.path}`,

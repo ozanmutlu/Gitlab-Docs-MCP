@@ -11,7 +11,7 @@ import { loadConfig } from './config.js';
 import { registerResources } from './resources/index.js';
 import { registerPrompts } from './prompts/index.js';
 import { logger } from './utils/logger.js';
-import { SERVER_VERSION, SERVER_NAME, DEFAULT_MAX_RESULTS, MAX_ALLOWED_RESULTS } from './utils/constants.js';
+import { SERVER_VERSION, SERVER_NAME, DEFAULT_MAX_RESULTS, MAX_ALLOWED_RESULTS, pathToUrl } from './utils/constants.js';
 import { SearchResponseSchema, DocPageResponseSchema, ListSectionsResponseSchema } from './types/models.js';
 import { DocumentNotFoundError } from './utils/errors.js';
 
@@ -46,7 +46,7 @@ async function main() {
       {
         title: 'Search GitLab Documentation',
         description:
-          'Search GitLab documentation for CI/CD pipelines, runners, API, administration, deployment, security, container registry, Kubernetes integration, and all GitLab features.',
+          'Search 2,900+ official GitLab documentation pages. Covers .gitlab-ci.yml syntax, CI/CD pipelines, runners, jobs, variables, artifacts, caching, environments, deployments, merge requests, approvals, code review, GitLab API (REST and GraphQL), container registry, package registry, Kubernetes agent, security scanning (SAST, DAST, dependency scanning, secret detection), GitLab Pages, authentication (SSO, SAML, LDAP, OAuth), permissions, admin settings, Gitaly, Sidekiq, Geo replication, and backup/restore.',
         inputSchema: {
           query: z.string().min(1),
           maxResults: z.number().int().min(1).max(MAX_ALLOWED_RESULTS).default(DEFAULT_MAX_RESULTS),
@@ -71,7 +71,7 @@ async function main() {
       {
         title: 'Get Documentation Page',
         description:
-          'Get the complete content of any GitLab documentation page including configuration examples, code snippets, and step-by-step guides.',
+          'Retrieve the full content of a GitLab documentation page by path. Returns complete configuration examples, YAML snippets, CLI commands, API request/response samples, and step-by-step setup guides. Use after searchGitLabDocs to get detailed page content.',
         inputSchema: {
           path: z.string(),
         },
@@ -98,7 +98,7 @@ async function main() {
         const response = DocPageResponseSchema.parse({
           title: doc.title,
           path: doc.path,
-          url: `https://docs.gitlab.com/${doc.path}`,
+          url: pathToUrl(doc.path),
           content: parsedContent,
           metadata: doc.metadata || {},
         });

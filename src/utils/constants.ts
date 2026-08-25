@@ -36,6 +36,18 @@ export const INDEX_VERSION = '1.0.0';
 export const GITLAB_DOCS_URL = 'https://docs.gitlab.com/';
 export const GITLAB_DOCS_REPO = 'https://gitlab.com/gitlab-org/gitlab-docs';
 
+export function pathToUrl(path: string): string {
+  let urlPath = path;
+  if (urlPath.endsWith('/_index.md')) {
+    urlPath = urlPath.replace('/_index.md', '/');
+  } else if (urlPath === '_index.md') {
+    urlPath = '';
+  } else if (urlPath.endsWith('.md')) {
+    urlPath = urlPath.slice(0, -3) + '/';
+  }
+  return `${GITLAB_DOCS_URL}${urlPath}`;
+}
+
 // File paths
 export const DEFAULT_INDEX_PATH = 'data/gitlab-docs';
 export const INDEX_META_FILE = 'index_meta.json';
