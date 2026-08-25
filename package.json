@@ -15,7 +15,7 @@
     "gitlab-docs-mcp": "dist/bin.js"
   },
   "engines": {
-    "node": ">=22.0.0"
+    "node": ">=22.13.0 || >=24"
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",

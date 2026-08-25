@@ -1,21 +1,15 @@
-FROM node:22.12.0-slim AS builder
-
-# Update system packages to fix known vulnerabilities
-RUN apt-get update && apt-get upgrade -y && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+FROM node:24-slim AS builder
 
 WORKDIR /app
 
-COPY package*.json tsconfig.json ./
+COPY package*.json tsconfig.json tsconfig.build.json ./
 COPY src/ ./src/
-COPY scripts/ ./scripts/
 COPY data/gitlab-docs/ ./data/gitlab-docs/
 
-RUN npm ci && npm run build
+RUN npm ci --ignore-scripts && npm run build
 
-FROM node:22.12.0-slim
+FROM node:24-slim
 
-# Update system packages to fix known vulnerabilities
 RUN apt-get update && apt-get upgrade -y && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
