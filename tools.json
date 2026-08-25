@@ -1,7 +1,7 @@
 [
   {
     "name": "searchGitLabDocs",
-    "description": "Search across GitLab's official documentation with intelligent ranking. Covers 2,494+ pages including CI/CD, API, administration, development, security, and operations.",
+    "description": "Search across GitLab's official documentation with intelligent ranking. Covers 2,900+ pages including CI/CD, API, administration, development, security, and operations.",
     "arguments": [
       {
         "name": "query",
@@ -27,7 +27,7 @@
       {
         "name": "path",
         "type": "string",
-        "desc": "Document path (e.g., 'ci/yaml/README.md')"
+        "desc": "Document path (e.g., 'ci/yaml/_index.md')"
       }
     ]
   },

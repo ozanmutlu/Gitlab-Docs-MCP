@@ -2,7 +2,9 @@
 src/
 scripts/
 tsconfig.json
+tsconfig.build.json
 vitest.config.ts
+eslint.config.js
 
 # Development
 *.test.ts
