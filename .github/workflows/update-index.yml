@@ -44,8 +44,8 @@ jobs:
           if [ -d "data/gitlab-docs-repo/.git" ]; then
             echo "Cache hit — pulling latest changes"
             cd data/gitlab-docs-repo
-            git fetch --depth 1 origin main
-            git reset --hard origin/main
+            git fetch --depth 1 origin
+            git reset --hard FETCH_HEAD
           else
             echo "Cache miss — performing fresh clone"
             rm -rf data/gitlab-docs-repo
