@@ -80,7 +80,7 @@ Cursor has built-in MCP support. Create or edit the MCP configuration file:
 
 ```json
 {
-  "servers": {
+  "mcpServers": {
     "gitlab-docs": {
       "command": "npx",
       "args": ["-y", "gitlab-docs-mcp"]
@@ -125,7 +125,7 @@ The AI assistant will automatically use the GitLab Docs MCP server to search doc
 ## Available Tools
 
 ### `searchGitLabDocs`
-Search across 2,494 GitLab documentation pages with intelligent ranking.
+Search across 2,900+ GitLab documentation pages with intelligent ranking.
 
 **Parameters:**
 - `query` - Search terms
@@ -136,7 +136,7 @@ Search across 2,494 GitLab documentation pages with intelligent ranking.
 Retrieve the complete content of a specific documentation page.
 
 **Parameters:**
-- `path` - Document path (e.g., "ci/yaml/README.md")
+- `path` - Document path (e.g., "ci/yaml/_index.md")
 
 ### `listDocSections`
 Browse available documentation sections and their structure.
@@ -144,7 +144,7 @@ Browse available documentation sections and their structure.
 ## Troubleshooting
 
 **Server not responding?**
-- Ensure Node.js 22+ is installed: `node --version`
+- Ensure Node.js 22.13+ or 24+ is installed: `node --version`
 - Restart your AI assistant/client completely
 - Check application logs for MCP connection errors
 
