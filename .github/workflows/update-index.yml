@@ -34,7 +34,7 @@ jobs:
       
       - name: Cache GitLab docs repository
         id: cache-gitlab-docs
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: data/gitlab-docs-repo
           key: gitlab-docs-repo-v1
