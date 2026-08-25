@@ -1,0 +1,38 @@
+name: Publish to MCP Registry
+
+on:
+  schedule:
+    - cron: '0 4 * * 1'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+
+      - name: Check if registry is behind npm
+        id: check
+        run: |
+          NPM_VERSION=$(npm view gitlab-docs-mcp version 2>/dev/null || echo "0.0.0")
+          LOCAL_VERSION=$(node -p "require('./server.json').version")
+          echo "npm=$NPM_VERSION local=$LOCAL_VERSION"
+          if [ "$NPM_VERSION" != "$LOCAL_VERSION" ]; then
+            echo "outdated=true" >> $GITHUB_OUTPUT
+          else
+            echo "outdated=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Publish to MCP Registry
+        if: steps.check.outputs.outdated == 'false'
+        run: |
+          curl -sL "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_linux_amd64.tar.gz" | tar xz mcp-publisher
+          ./mcp-publisher login github-oidc
+          ./mcp-publisher publish
